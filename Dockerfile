@@ -1,6 +1,5 @@
 FROM python:3.10-slim as compile-image
 RUN apt-get update
-RUN apt-get install -y libffi7 libffi-dev
 RUN apt-get install -y --no-install-recommends gcc build-essential && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -m 777 /app
@@ -8,9 +7,6 @@ COPY pyproject.toml poetry.lock /app/
 WORKDIR /app
 
 RUN python -m venv .venv && .venv/bin/pip install --upgrade pip
-RUN apt-get update && apt-get -qq -y install curl
-RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
-RUN echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
 RUN .venv/bin/pip install poetry
 RUN .venv/bin/poetry update
 RUN .venv/bin/poetry install --no-root --no-dev
