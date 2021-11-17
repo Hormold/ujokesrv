@@ -3,6 +3,9 @@
 from starlette.applications import Starlette
 from starlette.responses import JSONResponse
 from starlette.routing import Route
+from starlette.middleware import Middleware
+from starlette.middleware.cors import CORSMiddleware
+
 from jokeson import load_jokes
 import random
 import uvicorn  # type: ignore
@@ -28,6 +31,9 @@ async def categories_request(request):
     del categories[0]
     return JSONResponse(categories)
 
+middleware = [
+    Middleware(CORSMiddleware, allow_origins=['*'])
+]
 
 app = Starlette(
     debug=True,
@@ -36,6 +42,7 @@ app = Starlette(
         Route("/categories", categories_request),
         Route("/{category}", joke_request),
     ],
+    middleware=middleware
 )
 
 if __name__ == "__main__":
