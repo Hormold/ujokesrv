@@ -8,7 +8,9 @@ COPY pyproject.toml poetry.lock /app/
 WORKDIR /app
 
 RUN python -m venv .venv && .venv/bin/pip install --upgrade pip
+RUN apt-get install -y curl
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
+RUN echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
 RUN .venv/bin/pip install poetry
 RUN .venv/bin/poetry update
 RUN .venv/bin/poetry install --no-root --no-dev
