@@ -1,6 +1,6 @@
 FROM python:3.10-slim as compile-image
 RUN apt-get update
-RUN apt-get install libffi libffi-dev
+RUN apt-get install libffi7 libffi-dev
 RUN apt-get install -y --no-install-recommends gcc build-essential && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -m 777 /app
